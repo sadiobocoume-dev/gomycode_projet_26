@@ -46,11 +46,16 @@
 
 /* Carte projet */
 .card {
+    display: block;
+    /* <Link> est inline par defaut , on le passe en bloc*/
+    text-decoration: none;
+    color: inherit;
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
     transition: border-color 0.2s ease, transform 0.2s ease;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .card:hover {

@@ -56,7 +56,7 @@ c'est l'avantage des css modules*/
     transition: width 0.2s ease;
 }
 
-.link::hover {
+.link:hover {
     color: var(--color-text);
 }
 

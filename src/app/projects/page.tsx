@@ -4,40 +4,28 @@
 //Au module 5 on les chargera cote serveur depuis un fichier externe
 // On ajoute <Image> pour les miniatures de projets.
 // "fill" mode :
-
+// Module 5 "async" : ce composant s'execute cote serveur et peut await des donnees.
+// Next.js genere cette page Une fpis au build(SSG par defaut)
 import type { Metadata } from "next";
 import Image from "next/image"
+import Link from "next/link"
 import styles from "./page.module.css"
+import { getProjects } from "@/data/projects";
+
 
 export const metadata: Metadata = {
     title: "Projects"
 };
 
-const projects = [
-    {
-        id: 1,
-        title: "Portfolio Next.js",
-        description: "Site portfolio personnel construit avec Next.js 16, TypeScript et CSS Modules.",
-        tags: ["Next.js", "TypeScript", "CSS Modules"],
-        image: "/project-1.jpg", // ← ajouté
-    },
-    {
-        id: 2,
-        title: "App Météo",
-        description: "Application météo en temps réel qui consomme une API REST externe.",
-        tags: ["React", "API REST", "JavaScript"],
-        image: "/project-2.jpg", // ← ajouté
-    },
-    {
-        id: 3,
-        title: "E-commerce UI",
-        description: "Interface d'une boutique en ligne avec panier et filtres dynamiques.",
-        tags: ["React", "Node.js", "MongoDB"],
-        image: "/project-3.jpg", // ← ajouté
-    },
-];
+// "async" permet d'utiliser await directement dans le composant
 
-export default function ProjectsPage() {
+
+
+
+export default async function ProjectsPage() {
+    // Les donnees sont charges sur le serveur, Avant d'envoyer le HTML
+    // Le navigateur recoit une page deja construite, SEO parfait
+    const projects = await getProjects();
     return (
         <div className={styles.page}>
 
@@ -48,7 +36,9 @@ export default function ProjectsPage() {
 
             <div className={styles.grid}>
                 {projects.map((project) => (
-                    <div key={project.id} className={styles.card}>
+                    // Link sur toute la carte , navige vers /projects/[slug]
+                    <Link key={project.id} href={`/projects/${project.slug}`} className={styles.card}>
+
                         {/* Conteneur de l'image - position: relative obligatoire pour fill */}
                         <div className={styles.imageWrapper}>
                             <Image
@@ -71,7 +61,8 @@ export default function ProjectsPage() {
                             </div>
                         </div>
 
-                    </div>
+
+                    </Link>
                 ))}
             </div>
 
