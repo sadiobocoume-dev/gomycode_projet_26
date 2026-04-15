@@ -1,142 +1,140 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
+/* page.module.css - Page d'accueil
+Structure : Hero section (nom + titre + boutons) */
 
-  --text-primary: #000;
-  --text-secondary: #666;
+/* Ajout de Module 4 - section photo de profil*/
 
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
 
+.heroInner {
   display: flex;
-  flex: 1;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
-}
-
-.main {
-  display: flex;
-  flex: 1;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
-}
-
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  gap: 4rem;
   text-align: left;
-  gap: 24px;
 }
 
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
+.photoWrapper {
+  flex-shrink: 0;
+  /* empeche la phot de retrecir*/
+  position: relative;
+  width: 200px;
+  height: 220px;
+  border-radius: 50%;
+  /* bordure animee avec le dregrade*/
+  background: linear-gradient(135deg, var(--color-primary), #a78bfa);
+  padding: 4px;
 }
 
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
+.photo {
+  border-radius: 50%;
+  object-fit: cover;
+  /* recadre sans deformer l'image*/
+  width: 100% !important;
+  height: 100% !important;
 }
 
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
+@media (max-width: 768px) {
+  .heroInner {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .photoWrapper {
+    width: 160px;
+    height: 160px;
+  }
+
+  .actions {
+    justify-content: center;
+  }
 }
 
-.ctas {
+.hero {
+  min-height: calc(100vh - 64px)
+    /* 64px = hauteur navbar*/
+  ;
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
-}
-
-.ctas a {
-  display: flex;
-  justify-content: center;
   align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
+  justify-content: center;
+  padding: 2rem;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
+.content {
+  max-width: 700px;
+  text-align: center;
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+/* petit badge au dessus du nom*/
+.badge {
+  display: inline-block;
+  background-color: rgba(108, 99, 255, 0.15);
+  color: var(--color-primary);
+  border: 1PX solid rgba(108, 99, 255, 0.3);
+  padding: 0.35rem 1rem;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
+.title {
+  font-size: clamp(2, 5rem, 6vh, 4rem);
+  /*responsive sans medias queries*/
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin-bottom: 1.5rem;
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
-  }
+/*"clamp(min, prefere, max)" : s'adapte a la taille de l'ecran*/
 
-  .intro {
-    gap: 16px;
-  }
-
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
+.highlight {
+  color: var(--color-primary);
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  max-width: 500px;
+  margin: 0 auto 2.5rem;
+}
 
-  .page {
-    --background: #000;
-    --foreground: #000;
+.actions {
+  display: flex;
+  gap: 1 rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* passe en colonne sur mobile*/
+}
 
-    --text-primary: #ededed;
-    --text-secondary: #999;
+.btnPrimary {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.85rem 2rem;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: bacground-color 0.2s ease, transform 0.2s ease;
+}
 
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
-  }
+.btnPrimary:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-2px);
+  /* legere animation au hover*/
+}
+
+
+.btnSecondary {
+  background-color: transparent;
+  color: var(--color-text);
+  padding: 0.85rem 2rem;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.btnSecondary:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
 }

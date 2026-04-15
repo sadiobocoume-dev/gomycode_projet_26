@@ -1,0 +1,76 @@
+/* about/page.module.css*/
+.page {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 5rem 2rem;
+}
+
+.header {
+    margin-bottom: 4rem;
+}
+
+.label {
+    font-size: 0.85rem;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.2;
+}
+
+.grid {
+    /* 2 colonnes sur Desktop, 1 sur mobile*/
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+.bio p {
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+/* Section competences */
+.skillsTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--color-text);
+}
+
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.skill {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    transition: border-color 0.2s ease;
+}
+
+.skill:hover {
+    border-color: var(--color-primary);
+}
