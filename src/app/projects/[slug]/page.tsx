@@ -1,22 +1,22 @@
-//projects/[slug]/page.tsx - module 5
-// Route dynamique : /projects/portofolio-nextjs, /projects/app-meteo, etc
-//
-// "generationStaticParams" : dit a Next.js quelles page genere au build
-// sans cette fonction , Next.js genererait les pages a la demande(SSR).
-// Avec elle , elle sont pre-generes a l'avance(SSG) ultr-rapide.
+// projects/[slug]/page.tsx- Module 5
+// chaque page projet charge ses donnes depuis Mongodb
+// le compteur de vues s'increment a chaque visite
+
 
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link"
-import { getProjects, getProjectBySlug } from "@/data/projects"
+import { connectDB } from "@/lib/mongodb"
+import Projet from "@/models/projet"
 import styles from "./page.module.css"
 
-// Genere les parametres statiques au build
+// pre-genere les page au build depuis MongoDB
 //Next.js appelera cette page pour chaque slug retourne
 export async function generateStaticParams() {
-    const projects = await getProjects();
+    await connectDB()
+    const projets = await Projet.find({ publie: true }).lean()
     // Retourne un tableau d'objets { slug: "..."}
-    return projects.map((p) => ({ slug: p.slug }))
+    return projets.map((p) => ({ slug: p.slug }))
 }
 
 // genere les metadonnes dynamiquement selon le projet
@@ -27,9 +27,10 @@ export async function generateMetadata({
     params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
     const { slug } = await params;
-    const project = await getProjectBySlug(slug);
+    await connectDB();
+    const projet = await Projet.findOne({ slug }).lean();
     return {
-        title: project?.title ?? "Projet introuvable",
+        title: projet?.titre ?? "Projet introuvable",
     };
 }
 
@@ -39,9 +40,17 @@ export default async function ProjectPage({
     params: Promise<{ slug: string }>
 }) {
     const { slug } = await params
-    const project = await getProjectBySlug(slug);
+    await connectDB();
+
+    // Recupere le projet Et incremente les vues en une seule requete
+    // {new:true} retourne le document avec modificarion
+    const projet = await Projet.findOneAndUpdate(
+        { slug },
+        { $inc: { vues: 1 } },
+        { returnDocument: 'after' }
+    ).lean();
     // si le slug n'existe pas , affiche un message d'erreur
-    if (!project) {
+    if (!projet) {
         return (
             <div className={styles.page}>
                 <p>Projet introuvable.</p>
@@ -61,8 +70,8 @@ export default async function ProjectPage({
 
             <div className={styles.imageWrapper}>
                 <Image
-                    src={project.image}
-                    alt={project.title}
+                    src={projet.image}
+                    alt={projet.titre}
                     fill
                     className={styles.image}
                     priority
@@ -72,20 +81,25 @@ export default async function ProjectPage({
 
             {/* Contenu */}
             <div className={styles.content}>
-                <h1 className={styles.title}>{project.title}</h1>
+                <h1 className={styles.title}>{projet.titre}</h1>
+
+                {/* Compteur de vues */}
+                <p style={{ color: "var(--color-text-muted)", marginBottom: "1rem" }}>
+                    {projet.vues} vue{projet.vues > 1 ? "s" : ""}
+                </p>
 
                 <div className={styles.tags}>
-                    {project.tags.map((tag) => (
+                    {(projet.tags as string[]).map((tag) => (
                         <span key={tag} className={styles.tag}>{tag}</span>
                     ))}
                 </div>
 
-                <p className={styles.description}>{project.longDescription}</p>
+                <p className={styles.description}>{projet.longDescription}</p>
 
                 {/* Liens */}
                 <div className={styles.links}>
                     <a
-                        href={project.github}
+                        href={projet.github}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.btnSecondary}
@@ -93,7 +107,7 @@ export default async function ProjectPage({
                         GitHub
                     </a>
                     <a
-                        href={project.demo}
+                        href={projet.demo}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.btnPrimary}

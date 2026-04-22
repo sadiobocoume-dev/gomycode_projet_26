@@ -3,6 +3,8 @@
 // Dans un vari projet, ce fetch() irait chercher les donnees 
 // depuis une API (Github, Notion, CMS).
 
+
+
 export type Project = {
     id: number
     slug: string  // identifiant dans l'url : /projects/portofolio-nextjs

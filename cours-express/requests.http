@@ -1,0 +1,49 @@
+# Cours Express - Requêtes HTTP
+
+### GET tous les utilisateurs
+GET http://localhost:3000/users
+
+###
+
+### GET un utilisateur par ID
+GET http://localhost:3000/users/1
+
+###
+
+### POST créer un utilisateur
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "nom": "Kefi",
+  "email": "kefi@gmail.com"
+}
+
+### PUT modifier un user
+PUT http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+  "nom": "Sadio"
+}
+
+###
+
+### DELETE supprimer un user
+DELETE http://localhost:3000/users/3
+
+### GET filtre par ville
+GET http://localhost:3000/users?ville=Thies
+
+### GET filtre par age
+GET http://localhost:3000/users?age=19
+
+###
+
+### GET filtre ville + age
+GET http://localhost:3000/users?ville=Thies&age=20
+
+###
+
+### GET plusieurs parametres
+GET http://localhost:3000/users/3/commandes/7
