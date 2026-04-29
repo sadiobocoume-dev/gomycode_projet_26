@@ -1,0 +1,202 @@
+# ============================================================
+# TESTS API AUTH — E-commerce MERN
+# Extension VS Code requise : REST Client (Huachao Mao)
+# Serveur : http://localhost:5001
+# ============================================================
+
+
+# ============================================================
+# REGISTER — POST /api/auth/register
+# ============================================================
+
+### ✅ CAS NORMAL — inscription réussie (201 + token JWT)
+POST http://localhost:5001/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@test.com",
+  "password": "Test1234!"
+}
+
+###
+
+### ❌ EMAIL DEJA UTILISE — doit retourner 400
+POST http://localhost:5001/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@test.com",
+  "password": "Test1234!"
+}
+
+###
+
+### ❌ MOT DE PASSE TROP COURT — moins de 8 caractères → 500 ValidationError
+POST http://localhost:5001/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "court@test.com",
+  "password": "123"
+}
+
+###
+
+### ❌ CHAMPS MANQUANTS — pas de password → 500 ValidationError
+POST http://localhost:5001/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Sans Password",
+  "email": "nopwd@test.com"
+}
+
+###
+
+### ✅ INSCRIPTION ADMIN — role admin (à changer manuellement en base si besoin)
+POST http://localhost:5001/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "admin@test.com",
+  "password": "Admin1234!"
+}
+
+
+# ============================================================
+# LOGIN — POST /api/auth/login
+# ============================================================
+
+###
+
+### ✅ CAS NORMAL — connexion réussie (200 + token JWT)
+POST http://localhost:5001/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+   "password": "Admin1234!"
+
+}
+
+###
+
+### ❌ MAUVAIS MOT DE PASSE — doit retourner 401
+POST http://localhost:5001/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "MauvaisMotDePasse!"
+}
+
+###
+
+### ❌ EMAIL INEXISTANT — doit retourner 401
+POST http://localhost:5001/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "inconnu@test.com",
+  "password": "Test1234!"
+}
+
+###
+
+### ❌ CHAMPS MANQUANTS — pas de password → 400
+POST http://localhost:5001/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com"
+}
+
+###
+
+### ❌ BODY VIDE — aucun champ → 400
+POST http://localhost:5001/api/auth/login
+Content-Type: application/json
+
+{}
+
+
+# ============================================================
+# PRODUITS — /api/products
+# IMPORTANT : remplace TOKEN_ICI par le token reçu après login
+# ============================================================
+
+###
+
+### ✅ GET TOUS LES PRODUITS — public (200 + tableau vide au début)
+GET http://localhost:5001/api/products
+
+###
+
+### ✅ GET AVEC FILTRE CATEGORIE
+GET http://localhost:5001/api/products?category=electronique
+
+###
+
+### ✅ GET AVEC RECHERCHE
+GET http://localhost:5001/api/products?search=samsung
+
+###
+
+### ✅ GET AVEC FOURCHETTE DE PRIX
+GET http://localhost:5001/api/products?minPrice=10&maxPrice=500
+
+###
+
+### ✅ CREATE PRODUIT — admin requis (201 + produit créé)
+# Connecte-toi en admin d'abord et copie le token ici
+POST http://localhost:5001/api/products
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZjExNjBlMDI2MGZkZWZjYmEyODc5MiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3NzQ3MzYzMSwiZXhwIjoxNzgwMDY1NjMxfQ.4RQR_651S-DGwLvD9pQpy9O4jnQhmn2Ypo7vK6qsMDg
+
+{
+  "name": "Samsung Galaxy S24",
+  "description": "Smartphone haut de gamme avec écran AMOLED",
+  "price": 899,
+  "image": "https://via.placeholder.com/400",
+  "category": "electronics",
+  "stock": 15
+}
+
+###
+
+### ✅ UPDATE PRODUIT — admin requis (200 + produit modifié)
+# Remplace PRODUCT_ID par l'_id reçu après la création
+PUT http://localhost:5001/api/products/69f2196c02476e6668633381
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZjExNjBlMDI2MGZkZWZjYmEyODc5MiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3NzQ3MzYzMSwiZXhwIjoxNzgwMDY1NjMxfQ.4RQR_651S-DGwLvD9pQpy9O4jnQhmn2Ypo7vK6qsMDg
+
+{
+  "price": 799,
+  "stock": 20
+}
+
+###
+
+### ✅ DELETE PRODUIT — admin requis (200 + message supprimé)
+DELETE http://localhost:5001/api/products/PRODUCT_ID
+Authorization: Bearer TOKEN_ICI
+
+###
+
+### ❌ CREATE SANS TOKEN — doit retourner 401
+POST http://localhost:5001/api/products
+Content-Type: application/json
+
+{
+  "name": "Produit sans auth",
+  "price": 100
+}
+
+###
+
+### ❌ GET PRODUIT INEXISTANT — doit retourner 404
+GET http://localhost:5001/api/products/000000000000000000000000
