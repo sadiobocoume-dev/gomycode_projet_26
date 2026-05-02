@@ -18,10 +18,13 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
             filter.category = category
         }
 
-        // $text utilise l'index texte créé sur le modèle : beaucoup plus rapide que $regex
-        // Il cherche les mots entiers dans name et description
+        // $regex cherche le texte contenu dans le mot (ex: "airp" trouve "AirPods")
+        // $options: 'i' = insensible à la casse
         if (search) {
-            filter.$text = { $search: search as string }
+            filter.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } }
+            ]
         }
 
         if (minPrice || maxPrice) {
