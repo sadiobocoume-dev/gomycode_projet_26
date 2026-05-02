@@ -1,37 +1,31 @@
 import ProducList from "../../components/ProductList";
 import ProductFilter from '@/components/ProductFilter'
+import Pagination from '@/components/Pagination'
 import PageHero from '@/components/PageHero'
 import { Product } from '@/types/product'
 import { Suspense } from "react";
 
-
-//aync = ce composant peut etre des appels reseau
-// c'est un server component - s'execute cote serveur, pas ds le naviagteur
-
-// searchParams = les parametres de l'URL recus automatiquement par Next.js
-//ex: /products?category=elctronics searchParams = {category: 'electronics'}
 export default async function ProductsPage({
     searchParams }: {
         searchParams: Promise<{ [key: string]: string | undefined }>
     }) {
-    // En Next.js 16, searchParams est une Promise — doit être attendue avant utilisation
     const filters = await searchParams
 
-    // On construit les query params a envoyer au backend
     const params = new URLSearchParams()
     if (filters.search) params.set('search', filters.search)
     if (filters.category) params.set('category', filters.category)
     if (filters.minPrice) params.set('minPrice', filters.minPrice)
     if (filters.maxPrice) params.set('maxPrice', filters.maxPrice)
-    // fetch() natif de Next.js - fait la requete au backend
-    //process.env.NEXT_PUBLIC_API_URL = http://localhost:5001
+    if (filters.page) params.set('page', filters.page)
+
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/products?${params.toString()}`
-    const res = await fetch(url, { cache: 'no-store' })
-    // cache: 'no-store' = ne pas mettre en cache, tjrs les donnees fraiches
-    // utile pour un catalogue qui peut changer souvent
 
+    // revalidate: 60 = Next.js garde la réponse en cache 60 secondes
+    // Évite d'appeler le backend à chaque visite et réduit les cold starts
+    const res = await fetch(url, { next: { revalidate: 60 } })
 
-    const products: Product[] = await res.json()
+    const data: { products: Product[]; total: number; page: number; totalPages: number } = await res.json()
+
     return (
         <>
             <PageHero
@@ -43,7 +37,10 @@ export default async function ProductsPage({
                 <Suspense fallback={<div className="text-slate-400 text-sm">Chargement des filtres...</div>}>
                     <ProductFilter />
                 </Suspense>
-                <ProducList products={products} />
+                <ProducList products={data.products} />
+                <Suspense fallback={null}>
+                    <Pagination currentPage={data.page} totalPages={data.totalPages} />
+                </Suspense>
             </main>
         </>
     )

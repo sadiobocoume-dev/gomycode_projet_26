@@ -56,4 +56,11 @@ const ProductSchema = new Schema<IProduct>(
     }
 )
 
+// Index texte : permet à MongoDB de chercher efficacement dans name et description
+// Sans ça, chaque recherche parcourt TOUS les documents un par un (lent)
+ProductSchema.index({ name: 'text', description: 'text' })
+
+// Index composé : accélère les filtres par catégorie et par prix combinés
+ProductSchema.index({ category: 1, price: 1 })
+
 export default mongoose.model<IProduct>('Product', ProductSchema)

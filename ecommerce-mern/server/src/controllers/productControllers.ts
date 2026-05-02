@@ -1,38 +1,47 @@
 import { Request, Response } from 'express'
 import Product from '../models/Product'
 
-//GET /api/products - recupers ts les produits
-//Query params optionnes: ?category=shoes&search=air&minPrice=10&maxPrice=200
+//GET /api/products - recupere les produits avec filtres et pagination
+// Query params: ?category=shoes&search=air&minPrice=10&maxPrice=200&page=1&limit=9
 export const getProducts = async (req: Request, res: Response): Promise<void> => {
     try {
-        //req.query contient les parametres apres le ? ds l'url
-        const { category, search, minPrice, maxPrice } = req.query
-        // on construit le filtre dynamiquement selon ce qui est fourni
-        // {} = aucun filtre retourne tout
+        const { category, search, minPrice, maxPrice, page, limit } = req.query
+
+        // page courante (défaut 1) et nombre de produits par page (défaut 9)
+        const currentPage = Math.max(1, Number(page) || 1)
+        const pageSize = Math.min(50, Math.max(1, Number(limit) || 9))
+        const skip = (currentPage - 1) * pageSize
+
         const filter: any = {}
-        // si ?category=shoes filtre 
+
         if (category) {
             filter.category = category
         }
-        // si ?search=air cherche "air" ds le nom OU la description
-        //$regex = expression reguliere MongoDB
-        //$options: 'i' = insensible a la casse (Air = air = AIR)
+
+        // $text utilise l'index texte créé sur le modèle : beaucoup plus rapide que $regex
+        // Il cherche les mots entiers dans name et description
         if (search) {
-            filter.$or = [
-                { name: { $regex: search, $options: 'i' } },
-                { description: { $regex: search, $options: 'i' } }
-            ]
+            filter.$text = { $search: search as string }
         }
 
-        // si  ?minPrice=10&maxPrice=200 filtre par fourchette de prix
         if (minPrice || maxPrice) {
             filter.price = {}
             if (minPrice) filter.price.$gte = Number(minPrice)
             if (maxPrice) filter.price.$lte = Number(maxPrice)
         }
-        // .find(filter) = cherche ts les documents qui correspondent au filtre
-        const products = await Product.find(filter)
-        res.status(200).json(products)
+
+        // Promise.all exécute les deux requêtes en parallèle au lieu de l'une après l'autre
+        const [products, total] = await Promise.all([
+            Product.find(filter).skip(skip).limit(pageSize),
+            Product.countDocuments(filter)
+        ])
+
+        res.status(200).json({
+            products,
+            total,
+            page: currentPage,
+            totalPages: Math.ceil(total / pageSize)
+        })
 
     } catch (error) {
         res.status(500).json({ message: 'Erreur serveur', error })
