@@ -1,5 +1,6 @@
 import ProducList from "../../components/ProductList";
 import ProductFilter from '@/components/ProductFilter'
+import PageHero from '@/components/PageHero'
 import { Product } from '@/types/product'
 import { Suspense } from "react";
 
@@ -11,14 +12,17 @@ import { Suspense } from "react";
 //ex: /products?category=elctronics searchParams = {category: 'electronics'}
 export default async function ProductsPage({
     searchParams }: {
-        searchParams: { [key: string]: string | undefined }
+        searchParams: Promise<{ [key: string]: string | undefined }>
     }) {
+    // En Next.js 16, searchParams est une Promise — doit être attendue avant utilisation
+    const filters = await searchParams
+
     // On construit les query params a envoyer au backend
     const params = new URLSearchParams()
-    if (searchParams.search) params.set('search', searchParams.search)
-    if (searchParams.category) params.set('category', searchParams.category)
-    if (searchParams.minPrice) params.set('minPrice', searchParams.minPrice)
-    if (searchParams.maxPrice) params.set('maxPrice', searchParams.maxPrice)
+    if (filters.search) params.set('search', filters.search)
+    if (filters.category) params.set('category', filters.category)
+    if (filters.minPrice) params.set('minPrice', filters.minPrice)
+    if (filters.maxPrice) params.set('maxPrice', filters.maxPrice)
     // fetch() natif de Next.js - fait la requete au backend
     //process.env.NEXT_PUBLIC_API_URL = http://localhost:5001
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/products?${params.toString()}`
@@ -29,21 +33,18 @@ export default async function ProductsPage({
 
     const products: Product[] = await res.json()
     return (
-        <main className="max-w-6xl mx-auto px-4 py-8">
-            {/* Titre de la page */}
-            <h1 className="text-3xl font-bold text-gray-800 mb-8">
-                Nos Produits
-            </h1>
-            {/*
-                Suspense est obligatoire quand on utilise useSearchParams ds un client Component
-                il affiche  "Chargement ..." pendant que le composant se prepare
-            */}
-            <Suspense fallback={<div>Chargement des filtres...</div>}>
-                <ProductFilter />
-            </Suspense>
-
-            {/* On passe les produits a ProducList qui les affiche */}
-            <ProducList products={products} />
-        </main>
+        <>
+            <PageHero
+                compact
+                title="Nos Produits"
+                subtitle="Découvrez toute notre sélection de produits locaux livrés à Thiès."
+            />
+            <main className="max-w-6xl mx-auto px-4 py-8">
+                <Suspense fallback={<div className="text-slate-400 text-sm">Chargement des filtres...</div>}>
+                    <ProductFilter />
+                </Suspense>
+                <ProducList products={products} />
+            </main>
+        </>
     )
 }

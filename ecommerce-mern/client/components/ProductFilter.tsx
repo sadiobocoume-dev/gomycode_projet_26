@@ -29,17 +29,18 @@ export default function ProductFilter() {
         // router.push() navigue vers la nouvelle Url sans recharge la page
         // ex: /products?category=electronics&minPrice=100   
         router.push(`/products?${params.toString()}`)
+        // refresh() force le Server Component a re-executer le fetch avec les nouveaux params
+        // Sans ca, Next.js utilise le cache et les resultats ne changent pas
+        router.refresh()
     }
 
     const handleReset = () => {
-        // vide tous les champs et retourne a /products sans filtres
         setSearch('')
         setCategory('')
         setMinPrice('')
         setMaxPrice('')
         router.push('/products')
-
-
+        router.refresh()
     }
     return (
         /*
@@ -47,7 +48,7 @@ export default function ProductFilter() {
           bg-white p-4 rounded-xl shadow  → carte blanche avec ombre
           md:flex-row  → horizontal sur tablette et desktop
       */
-        <div className="bg-white p-4 rounded-xl shadow mb-8 flex flex-col md:flex-row gap-4 items-end">
+        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm mb-8 flex flex-col md:flex-row gap-4 items-end">
 
             {/* Recherche par mot-clé */}
             <div className="flex flex-col gap-1 flex-1">
@@ -58,7 +59,7 @@ export default function ProductFilter() {
                     value={search}
                     // onChange se déclenche à chaque frappe clavier
                     onChange={(e) => setSearch(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
             </div>
 
@@ -68,7 +69,7 @@ export default function ProductFilter() {
                 <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 >
                     <option value="">Toutes</option>
                     <option value="electronics">Électronique</option>
@@ -87,7 +88,7 @@ export default function ProductFilter() {
                     placeholder="0"
                     value={minPrice}
                     onChange={(e) => setMinPrice(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
             </div>
 
@@ -99,7 +100,7 @@ export default function ProductFilter() {
                     placeholder="9999"
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
             </div>
 
@@ -107,7 +108,7 @@ export default function ProductFilter() {
             <div className="flex gap-2">
                 <button
                     onClick={handleFilter}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition"
+                    className="bg-teal-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-600 transition"
                 >
                     Filtrer
                 </button>

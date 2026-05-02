@@ -47,4 +47,14 @@ const protect = (req: AuthRequest, res: Response, next: NextFunction): void => {
     }
 }
 
+// Middleware admin — à chaîner APRÈS protect
+// protect garantit que req.user existe déjà
+export const isAdmin = (req: AuthRequest, res: Response, next: NextFunction): void => {
+    if (req.user?.role !== 'admin') {
+        res.status(403).json({ message: 'Accès réservé aux administrateurs' })
+        return
+    }
+    next()
+}
+
 export default protect
