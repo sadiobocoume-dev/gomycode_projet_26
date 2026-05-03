@@ -24,7 +24,7 @@ export interface IOrder extends Document {
     user: mongoose.Types.ObjectId // reference vers un user
     items: IOrderItem[] // tableau d'articles commandes
     total: number
-    status: 'en_attente' | 'payee' | 'expediee' | 'livree'
+    status: 'en_attente' | 'payee' | 'expediee' | 'livree' | 'annulee'
     isPaid: boolean
     paidAt?: Date  // ? = optionnel (pas encore paye)
     paymentId?: string // id de transaction Stripe ou paydunia
@@ -68,7 +68,7 @@ const OrderSchema = new Schema<IOrder>(
 
         status: {
             type: String,
-            enum: ['en_attente', 'payee', 'expediee', 'livree'],
+            enum: ['en_attente', 'payee', 'expediee', 'livree', 'annulee'],
             default: 'en_attente' // tte nouvelle commande commence ici
         },
 

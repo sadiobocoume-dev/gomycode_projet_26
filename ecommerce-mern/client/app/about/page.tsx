@@ -46,7 +46,7 @@ export default function AboutPage() {
                 </Card>
 
                 {/* Chiffres clés */}
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {[
                         { nb: '+500', label: 'Clients satisfaits' },
                         { nb: '+50',  label: 'Boutiques partenaires' },

@@ -5,6 +5,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Product } from '@/types/product'
 import { useCartStore } from '@/store/cartStore'
 
@@ -14,14 +15,13 @@ interface Props {
 
 export default function ProductCard({ product }: Props) {
     const addItem = useCartStore((state) => state.addItem)
+    const router  = useRouter()
 
     const handleAddToCart = (e: React.MouseEvent) => {
-        // Problème : le bouton est DANS un <Link>
-        // Sans ces deux lignes, cliquer sur le bouton naviguerait aussi vers /products/:id
-
-        e.preventDefault()    // annule l'action par défaut du navigateur (suivre le lien)
-        e.stopPropagation()   // arrête la propagation de l'événement vers le <Link> parent
+        e.preventDefault()
+        e.stopPropagation()
         addItem(product)
+        router.push('/cart')
     }
 
     return (

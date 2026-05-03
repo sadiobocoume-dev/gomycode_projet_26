@@ -38,7 +38,7 @@ export default function RootLayout({
                 → le body occupe au minimum toute la hauteur de l'écran
                 → les enfants s'empilent verticalement
                 C'est ce qui permet au Footer de toujours rester en bas */}
-            <body className="min-h-screen flex flex-col bg-sky-50">
+            <body className="min-h-screen flex flex-col bg-sky-50 overflow-x-hidden">
 
                 <Header />
 

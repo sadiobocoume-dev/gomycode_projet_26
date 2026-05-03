@@ -88,7 +88,7 @@ export const getOrderById = async (req: AuthRequest, res: Response): Promise<voi
 // ─────────────────────────────────────────────
 // GET /api/orders/admin/all — Toutes les commandes (admin)
 // ─────────────────────────────────────────────
-export const getAllOrders = async (req: AuthRequest, res: Response): Promise<void> => {
+export const getAllOrders = async (_req: AuthRequest, res: Response): Promise<void> => {
     try {
         // populate('user', 'name email') remplace l'ObjectId user
         // par { name, email } — pour afficher "qui a commandé" dans le dashboard
@@ -158,6 +158,39 @@ export const updateOrderStatus = async (req: AuthRequest, res: Response): Promis
         await order.save()
 
         res.status(200).json(order)
+
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur serveur', error })
+    }
+}
+
+// ─────────────────────────────────────────────
+// PATCH /api/orders/:id/cancel — Annuler une commande
+// Seul le propriétaire peut annuler, uniquement si statut = 'en_attente'
+// ─────────────────────────────────────────────
+export const cancelOrder = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const order = await Order.findById(req.params.id)
+
+        if (!order) {
+            res.status(404).json({ message: 'Commande introuvable' })
+            return
+        }
+
+        if (order.user.toString() !== req.user!.id) {
+            res.status(403).json({ message: 'Accès refusé' })
+            return
+        }
+
+        if (order.status !== 'en_attente') {
+            res.status(400).json({ message: 'Seules les commandes en attente peuvent être annulées' })
+            return
+        }
+
+        order.status = 'annulee'
+        await order.save()
+
+        res.status(200).json({ message: 'Commande annulée', order })
 
     } catch (error) {
         res.status(500).json({ message: 'Erreur serveur', error })

@@ -12,7 +12,7 @@ export interface Order {
     user: string // id du user
     items: OrderItem[]// tableau d'items
     total: number
-    status: 'en_attente' | 'payee' | 'expediee' | 'livree'
+    status: 'en_attente' | 'payee' | 'expediee' | 'livree' | 'annulee'
     isPaid: boolean
     paymentId?: string // le ? signifie optionnel (pas encore paye = pas de paymentsId)
     createdAt: string

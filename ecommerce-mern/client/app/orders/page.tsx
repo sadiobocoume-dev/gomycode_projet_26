@@ -16,6 +16,7 @@ function StatusBadge({ status }: { status: Order['status'] }) {
         payee:      'bg-green-50  text-green-600',
         expediee:   'bg-blue-50   text-blue-600',
         livree:     'bg-gray-50   text-gray-600',
+        annulee:    'bg-red-50    text-red-500',
     }
 
     const labels: Record<Order['status'], string> = {
@@ -23,6 +24,7 @@ function StatusBadge({ status }: { status: Order['status'] }) {
         payee:      'Payée',
         expediee:   'Expédiée',
         livree:     'Livrée',
+        annulee:    'Annulée',
     }
 
     return (
@@ -33,9 +35,10 @@ function StatusBadge({ status }: { status: Order['status'] }) {
 }
 
 export default function OrdersPage() {
-    const [orders, setOrders]   = useState<Order[]>([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError]     = useState('')
+    const [orders, setOrders]       = useState<Order[]>([])
+    const [loading, setLoading]     = useState(true)
+    const [error, setError]         = useState('')
+    const [cancelling, setCancelling] = useState<string | null>(null)
 
     useEffect(() => {
         // Récupère toutes les commandes de l'utilisateur connecté
@@ -52,7 +55,22 @@ export default function OrdersPage() {
         }
 
         fetchOrders()
-    }, []) // [] = une seule fois au montage
+    }, [])
+
+    const handleCancel = async (orderId: string) => {
+        if (!confirm('Confirmer l\'annulation de cette commande ?')) return
+        setCancelling(orderId)
+        try {
+            await api.patch(`/api/orders/${orderId}/cancel`)
+            setOrders(prev => prev.map(o =>
+                o._id === orderId ? { ...o, status: 'annulee' } : o
+            ))
+        } catch {
+            setError('Impossible d\'annuler la commande')
+        } finally {
+            setCancelling(null)
+        }
+    }
 
     return (
         <ProtectedRoute>
@@ -120,6 +138,16 @@ export default function OrdersPage() {
                                     >
                                         Voir le détail →
                                     </Link>
+
+                                    {order.status === 'en_attente' && (
+                                        <button
+                                            onClick={() => handleCancel(order._id)}
+                                            disabled={cancelling === order._id}
+                                            className="text-sm text-red-400 hover:text-red-600 hover:underline transition-colors disabled:opacity-50"
+                                        >
+                                            {cancelling === order._id ? 'Annulation...' : 'Annuler la commande'}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))}

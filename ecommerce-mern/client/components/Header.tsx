@@ -73,7 +73,7 @@ export default function Header() {
             <div className="max-w-6xl mx-auto px-4 h-16 flex items-center gap-4">
 
                 {/* Logo */}
-                <Link href="/" onClick={closeMenu} className="text-xl font-bold text-teal-600 hover:text-teal-700 transition shrink-0">
+                <Link href="/" onClick={closeMenu} className="text-base md:text-xl font-bold text-teal-600 hover:text-teal-700 transition truncate">
                     Galsen-Ecommerce-Shop
                 </Link>
 
@@ -215,8 +215,7 @@ export default function Header() {
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 placeholder="Rechercher un produit..."
-                                autoFocus
-                                className="flex-1 bg-transparent px-3 py-2.5 text-sm text-slate-700 placeholder-slate-400 focus:outline-none"
+                                className="flex-1 bg-transparent px-3 py-2.5 text-base text-slate-700 placeholder-slate-400 focus:outline-none"
                             />
                             <button type="submit" className="px-3 py-2 text-slate-400 hover:text-teal-600 transition-colors">
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

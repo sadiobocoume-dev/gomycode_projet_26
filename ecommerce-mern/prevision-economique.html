@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Présentation Finale — E-commerce MERN</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #f5f2ef;
+      --card:        #faf8f5;
+      --border:      #e2dbd4;
+      --brown-deep:  #6b5344;
+      --brown-mid:   #9c7c65;
+      --brown-light: #c9b09a;
+      --gray-mid:    #8a8480;
+      --gray-light:  #b8b3ae;
+      --text:        #3d3530;
+      --text-soft:   #7a706a;
+      --accent:      #a07855;
+      --success:     #7a9e7e;
+      --radius:      12px;
+      --shadow:      0 2px 16px rgba(90,60,40,.07);
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2rem 1rem 5rem;
+    }
+
+    .container { max-width: 920px; margin: 0 auto; }
+
+    /* ── Cover ── */
+    .cover {
+      text-align: center;
+      padding: 4rem 2rem 3.5rem;
+      background: var(--brown-deep);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 2.5rem;
+      color: #f5f0eb;
+    }
+
+    .cover .badge {
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      color: var(--brown-light);
+      font-size: .72rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      padding: .3rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 1.2rem;
+      font-family: 'Trebuchet MS', sans-serif;
+    }
+
+    .cover h1 {
+      font-size: 2.2rem;
+      font-weight: normal;
+      letter-spacing: .03em;
+      margin-bottom: .6rem;
+      color: #fff;
+    }
+
+    .cover p {
+      color: #c9b09a;
+      font-size: .92rem;
+      font-family: 'Trebuchet MS', sans-serif;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .cover .tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: 1.5rem;
+    }
+
+    .cover .tag {
+      background: rgba(255,255,255,.1);
+      color: #e0d6cd;
+      font-size: .72rem;
+      font-family: 'Trebuchet MS', sans-serif;
+      padding: .25rem .75rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.15);
+    }
+
+    /* ── Nav sommaire ── */
+    .sommaire {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .sommaire h3 {
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      font-family: 'Trebuchet MS', sans-serif;
+      margin-bottom: 1rem;
+    }
+
+    .sommaire ol {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .4rem .5rem;
+    }
+
+    .sommaire li {
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: .85rem;
+    }
+
+    .sommaire a {
+      color: var(--brown-mid);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .sommaire a:hover { color: var(--brown-deep); text-decoration: underline; }
+
+    .sommaire .n {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--border);
+      color: var(--brown-deep);
+      font-size: .68rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Sections ── */
+    .section { margin-bottom: 2.5rem; scroll-margin-top: 1rem; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-title .num {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--brown-mid);
+      color: #fff;
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: .8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-title h2 {
+      font-size: 1.25rem;
+      color: var(--brown-deep);
+      font-weight: normal;
+      letter-spacing: .03em;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.75rem 2rem;
+    }
+
+    /* ── Highlight box ── */
+    .highlight {
+      background: #f0ebe5;
+      border-left: 3px solid var(--brown-light);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1rem 1.4rem;
+      margin-bottom: 1.25rem;
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: .87rem;
+      color: var(--text-soft);
+    }
+
+    .highlight strong { color: var(--brown-deep); }
+
+    /* ── Grid 2 colonnes ── */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    .grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.1rem; }
+
+    /* ── Stat card ── */
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .stat .s-icon { font-size: 1.5rem; margin-bottom: .4rem; }
+    .stat .s-val  { font-size: 1.4rem; color: var(--brown-deep); font-family:'Trebuchet MS',sans-serif; font-weight:700; }
+    .stat .s-label{ font-size: .75rem; color: var(--text-soft); font-family:'Trebuchet MS',sans-serif; margin-top:.2rem; }
+
+    /* ── Tech table ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: .87rem;
+    }
+
+    thead tr { background: var(--brown-deep); color: #fff; }
+    thead th { padding: .65rem 1rem; text-align: left; font-weight: normal; letter-spacing:.05em; }
+    tbody tr:nth-child(even) { background: #f0ebe5; }
+    tbody tr:hover { background: #ece4db; }
+    tbody td { padding: .6rem 1rem; color: var(--text); border-bottom: 1px solid var(--border); }
+    tbody td:last-child { font-weight: 600; color: var(--brown-deep); }
+    .total-row td { background: var(--brown-light) !important; color: #fff !important; font-weight:700; font-size:.92rem; }
+
+    /* ── Impact items ── */
+    .impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .impact-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      gap: .9rem;
+      align-items: flex-start;
+    }
+
+    .impact-item .icon { font-size: 1.3rem; flex-shrink:0; margin-top:.1rem; }
+    .impact-item h4 { font-size: .9rem; color: var(--brown-deep); margin-bottom:.25rem; font-family:'Trebuchet MS',sans-serif; }
+    .impact-item p  { font-size: .8rem; color: var(--text-soft); font-family:'Trebuchet MS',sans-serif; line-height:1.5; }
+
+    /* ── Livrable checklist ── */
+    .checklist { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+    .checklist li {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: .86rem;
+      color: var(--text);
+    }
+    .checklist li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: 700;
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Year cards ── */
+    .years-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-bottom: 2rem; }
+
+    .year-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .year-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+
+    .year-card.y1::before { background: var(--gray-light); }
+    .year-card.y2::before { background: var(--brown-light); }
+    .year-card.y3::before { background: var(--brown-mid); }
+
+    .year-card .label { font-family:'Trebuchet MS',sans-serif; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-mid); margin-bottom:.4rem; }
+    .year-card .amount { font-size:1.3rem; color:var(--brown-deep); font-weight:bold; font-family:'Trebuchet MS',sans-serif; margin-bottom:.3rem; }
+    .year-card .sub { font-size:.75rem; color:var(--text-soft); font-family:'Trebuchet MS',sans-serif; }
+
+    /* ── Recap block ── */
+    .recap {
+      background: var(--brown-deep);
+      color: #f5f0eb;
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .recap h3 { font-size:.9rem; font-weight:normal; letter-spacing:.08em; text-transform:uppercase; margin-bottom:1.5rem; color:var(--brown-light); font-family:'Trebuchet MS',sans-serif; }
+
+    .bar-container { margin-top: 1.5rem; }
+    .bar-row { display:flex; align-items:center; gap:1rem; margin-bottom:.75rem; font-family:'Trebuchet MS',sans-serif; font-size:.82rem; }
+    .bar-label { width:70px; color:#d9cfc7; flex-shrink:0; }
+    .bar-track { flex:1; height:8px; background:rgba(255,255,255,.12); border-radius:4px; overflow:hidden; }
+    .bar-fill { height:100%; border-radius:4px; }
+    .bar-fill.y1 { background:var(--gray-light); width:15%; }
+    .bar-fill.y2 { background:var(--brown-light); width:42%; }
+    .bar-fill.y3 { background:#c9a07a; width:100%; }
+    .bar-val { width:140px; text-align:right; color:#fff; font-weight:600; flex-shrink:0; }
+
+    .recap-row { display:flex; justify-content:space-between; align-items:center; padding:.7rem 0; border-bottom:1px solid rgba(255,255,255,.1); font-family:'Trebuchet MS',sans-serif; }
+    .recap-row:last-of-type { border-bottom:none; padding-top:1rem; margin-top:.5rem; border-top:1px solid rgba(255,255,255,.25); }
+    .recap-row .r-label { font-size:.9rem; color:#d9cfc7; }
+    .recap-row .r-amount { font-size:1rem; font-weight:700; color:#fff; }
+    .recap-row.total .r-label { font-size:1rem; color:var(--brown-light); }
+    .recap-row.total .r-amount { font-size:1.3rem; color:var(--brown-light); }
+
+    /* ── Conclusion ── */
+    .conclusion {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .conclusion blockquote {
+      font-size: 1.1rem;
+      color: var(--brown-deep);
+      font-style: italic;
+      border-left: none;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    .conclusion blockquote strong {
+      display: block;
+      margin-top: .75rem;
+      font-style: normal;
+      font-size: .85rem;
+      color: var(--text-soft);
+      font-family: 'Trebuchet MS', sans-serif;
+    }
+
+    /* ── Divider ── */
+    .divider { border:none; border-top:1px solid var(--border); margin:1.5rem 0; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: .76rem;
+      color: var(--gray-light);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .cover h1 { font-size: 1.5rem; }
+      .sommaire ol { grid-template-columns: 1fr; }
+      .grid2, .grid3, .years-grid, .impact-grid, .checklist { grid-template-columns: 1fr; }
+      .card { padding: 1.25rem 1rem; }
+      .recap-row { flex-direction: column; align-items: flex-start; gap: .2rem; }
+      .bar-val { width: auto; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ══ COVER ══ -->
+  <div class="cover">
+    <div class="badge">Présentation Finale · Gomycode</div>
+    <h1>Plateforme E-commerce MERN</h1>
+    <p>Viabilité du projet · Opportunité · Valeur économique · Impact social · Prévision 3 ans</p>
+    <div class="tags">
+      <span class="tag">Next.js + TypeScript</span>
+      <span class="tag">Node.js + Express</span>
+      <span class="tag">MongoDB Atlas</span>
+      <span class="tag">Stripe</span>
+      <span class="tag">Vercel + Render</span>
+    </div>
+  </div>
+
+  <!-- ══ SOMMAIRE ══ -->
+  <div class="sommaire">
+    <h3>Sommaire</h3>
+    <ol>
+      <li><a href="#s1"><span class="n">1</span> Le Projet</a></li>
+      <li><a href="#s2"><span class="n">2</span> L'Opportunité</a></li>
+      <li><a href="#s3"><span class="n">3</span> Viabilité Technique</a></li>
+      <li><a href="#s4"><span class="n">4</span> Valeur Économique</a></li>
+      <li><a href="#s5"><span class="n">5</span> Impact Social</a></li>
+      <li><a href="#s6"><span class="n">6</span> Ce qui a été livré</a></li>
+      <li><a href="#s7"><span class="n">7</span> Prévision 3 ans</a></li>
+      <li><a href="#s8"><span class="n">8</span> Conclusion</a></li>
+    </ol>
+  </div>
+
+  <!-- ══ 1. LE PROJET ══ -->
+  <div class="section" id="s1">
+    <div class="section-title">
+      <span class="num">1</span>
+      <h2>Le Projet en une phrase</h2>
+    </div>
+    <div class="card">
+      <div class="highlight">
+        <strong>Une plateforme e-commerce complète</strong> construite avec la stack MERN
+        (MongoDB, Express, React/Next.js, Node.js) + TypeScript, permettant à des clients
+        d'acheter des produits en ligne avec paiement sécurisé par carte bancaire.
+      </div>
+      <div class="grid3" style="margin-top:1.25rem;">
+        <div class="stat">
+          <div class="s-icon">📦</div>
+          <div class="s-val">22</div>
+          <div class="s-label">User Stories</div>
+        </div>
+        <div class="stat">
+          <div class="s-icon">🏃</div>
+          <div class="s-val">5</div>
+          <div class="s-label">Sprints Agile</div>
+        </div>
+        <div class="stat">
+          <div class="s-icon">⚡</div>
+          <div class="s-val">92 SP</div>
+          <div class="s-label">Story Points</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 2. OPPORTUNITE ══ -->
+  <div class="section" id="s2">
+    <div class="section-title">
+      <span class="num">2</span>
+      <h2>L'Opportunité</h2>
+    </div>
+    <div class="card">
+      <div class="highlight">
+        Le e-commerce mondial représente <strong>6 000 milliards de dollars en 2024</strong>
+        et continue de croître. Les petits commerces locaux n'ont souvent pas les moyens
+        de payer une agence pour créer leur boutique en ligne.
+      </div>
+      <div class="highlight">
+        <strong>L'opportunité :</strong> proposer une solution clé-en-main, moderne et
+        adaptable à tout type de business — vêtements, alimentation, artisanat, services.
+      </div>
+      <div class="grid2" style="margin-top:1.25rem;">
+        <div class="impact-item">
+          <span class="icon">🎯</span>
+          <div>
+            <h4>Marché cible</h4>
+            <p>Petits commerces, artisans, PME locales sans présence en ligne.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="icon">🚀</span>
+          <div>
+            <h4>Avantage concurrentiel</h4>
+            <p>Stack moderne, déploiement rapide, coût d'entrée quasi nul.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 3. VIABILITE TECHNIQUE ══ -->
+  <div class="section" id="s3">
+    <div class="section-title">
+      <span class="num">3</span>
+      <h2>Viabilité Technique</h2>
+    </div>
+    <div class="card">
+      <p style="font-family:'Trebuchet MS',sans-serif;font-size:.85rem;color:var(--text-soft);margin-bottom:1.25rem;">
+        Le projet couvre un cycle complet de développement logiciel avec des technologies
+        éprouvées et demandées sur le marché.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Composant</th><th>Technologie</th><th>Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Frontend</td><td>Next.js + TypeScript + Tailwind</td><td>Interface rapide (SSR)</td></tr>
+          <tr><td>Backend</td><td>Node.js + Express + TypeScript</td><td>API REST sécurisée</td></tr>
+          <tr><td>Base de données</td><td>MongoDB Atlas</td><td>Stockage cloud scalable</td></tr>
+          <tr><td>Authentification</td><td>JWT + bcrypt</td><td>Sécurité des comptes</td></tr>
+          <tr><td>Paiement</td><td>Stripe</td><td>Transactions sécurisées</td></tr>
+          <tr><td>Déploiement</td><td>Vercel + Render</td><td>Disponible 24h/24</td></tr>
+        </tbody>
+      </table>
+      <p style="font-family:'Trebuchet MS',sans-serif;font-size:.8rem;color:var(--success);margin-top:1rem;">
+        ✓ Stack présente dans <strong>80 % des offres d'emploi</strong> développeur web en 2024
+      </p>
+    </div>
+  </div>
+
+  <!-- ══ 4. VALEUR ECONOMIQUE ══ -->
+  <div class="section" id="s4">
+    <div class="section-title">
+      <span class="num">4</span>
+      <h2>Valeur Économique</h2>
+    </div>
+    <div class="card">
+      <div class="grid2">
+        <div>
+          <p style="font-family:'Trebuchet MS',sans-serif;font-size:.82rem;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem;">Pour un commerce client</p>
+          <div class="impact-item" style="margin-bottom:.75rem;">
+            <span class="icon">💰</span>
+            <div>
+              <h4>Zéro frais d'agence</h4>
+              <p>Développement from scratch évité — solution clé-en-main.</p>
+            </div>
+          </div>
+          <div class="impact-item" style="margin-bottom:.75rem;">
+            <span class="icon">💳</span>
+            <div>
+              <h4>Stripe : 1,4 % + 0,25 FCFA</h4>
+              <p>Pas de coût fixe — frais uniquement à la vente.</p>
+            </div>
+          </div>
+          <div class="impact-item">
+            <span class="icon">🌐</span>
+            <div>
+              <h4>Hébergement : 0 FCFA/mois</h4>
+              <p>Vercel gratuit + Render gratuit au démarrage.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p style="font-family:'Trebuchet MS',sans-serif;font-size:.82rem;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem;">Pour le développeur</p>
+          <div class="impact-item" style="margin-bottom:.75rem;">
+            <span class="icon">🗂️</span>
+            <div>
+              <h4>Portfolio technique</h4>
+              <p>Démontre des compétences full-stack complètes et concrètes.</p>
+            </div>
+          </div>
+          <div class="impact-item" style="margin-bottom:.75rem;">
+            <span class="icon">♻️</span>
+            <div>
+              <h4>Code réutilisable</h4>
+              <p>Chaque nouveau client coûte peu à déployer.</p>
+            </div>
+          </div>
+          <div class="impact-item">
+            <span class="icon">📈</span>
+            <div>
+              <h4>Revenu récurrent</h4>
+              <p>Abonnement maintenance mensuel par client actif.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 5. IMPACT SOCIAL ══ -->
+  <div class="section" id="s5">
+    <div class="section-title">
+      <span class="num">5</span>
+      <h2>Impact Social</h2>
+    </div>
+    <div class="card">
+      <div class="impact-grid">
+        <div class="impact-item">
+          <span class="icon">🌍</span>
+          <div>
+            <h4>Accessibilité</h4>
+            <p>Permet à de petits entrepreneurs (artisans, associations) d'avoir une boutique en ligne sans budget tech.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="icon">🔑</span>
+          <div>
+            <h4>Autonomisation</h4>
+            <p>Les admins gèrent leur catalogue et leurs commandes sans développeur au quotidien.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="icon">💼</span>
+          <div>
+            <h4>Emploi & Compétences</h4>
+            <p>Maîtriser cette stack ouvre des opportunités dans n'importe quelle entreprise digitale.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="icon">📱</span>
+          <div>
+            <h4>Inclusion numérique</h4>
+            <p>Interface responsive, accessible depuis mobile comme desktop, partout dans le monde.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 6. CE QUI A ETE LIVRE ══ -->
+  <div class="section" id="s6">
+    <div class="section-title">
+      <span class="num">6</span>
+      <h2>Ce qui a été livré</h2>
+    </div>
+    <div class="card">
+      <ul class="checklist">
+        <li>Catalogue produits avec filtres (catégorie, prix, recherche)</li>
+        <li>Authentification sécurisée (inscription / connexion / JWT)</li>
+        <li>Panier d'achat persistant (Zustand)</li>
+        <li>Paiement Stripe de bout en bout</li>
+        <li>Historique des commandes client</li>
+        <li>Dashboard administrateur</li>
+        <li>Gestion des statuts de commande (admin)</li>
+        <li>Déploiement en production (URL publique)</li>
+        <li>API REST complète testée sur Postman</li>
+        <li>Interface mobile responsive</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ 7. PREVISION 3 ANS ══ -->
+  <div class="section" id="s7">
+    <div class="section-title">
+      <span class="num">7</span>
+      <h2>Prévision Économique — 3 Ans</h2>
+    </div>
+
+    <div class="card" style="margin-bottom:1.25rem;">
+      <div class="highlight">
+        <strong>Modèle retenu :</strong> Freelance / SaaS — déploiement et personnalisation
+        de la plateforme pour des clients locaux (commerces, PME, artisans).
+      </div>
+      <div class="highlight" style="margin-bottom:0;">
+        <strong>Taux de change :</strong> 1 € = 656 FCFA · Monnaie affichée en <strong>Francs CFA (FCFA)</strong>
+      </div>
+    </div>
+
+    <!-- Année 1 -->
+    <div class="card" style="margin-bottom:1.25rem;">
+      <p style="font-family:'Trebuchet MS',sans-serif;font-size:.82rem;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;">
+        Année 1 — Lancement &amp; Validation
+        <span style="color:var(--text-soft);text-transform:none;letter-spacing:0;font-size:.8rem;"> · Objectif : 3 premiers clients</span>
+      </p>
+      <table>
+        <thead><tr><th>Source de revenus</th><th>Détail</th><th>Montant</th></tr></thead>
+        <tbody>
+          <tr><td>Développement &amp; déploiement</td><td>3 clients × 525 000 FCFA</td><td>1 575 000 FCFA</td></tr>
+          <tr><td>Maintenance mensuelle</td><td>3 clients × 33 000 FCFA × 6 mois</td><td>594 000 FCFA</td></tr>
+          <tr class="total-row"><td colspan="2">Total Année 1</td><td>~2 169 000 FCFA</td></tr>
+        </tbody>
+      </table>
+      <p style="font-family:'Trebuchet MS',sans-serif;font-size:.8rem;color:var(--success);margin-top:.9rem;">✓ Marge nette : ~95 % · Coûts infrastructure : ~100 000 FCFA/an</p>
+    </div>
+
+    <!-- Année 2 -->
+    <div class="card" style="margin-bottom:1.25rem;">
+      <p style="font-family:'Trebuchet MS',sans-serif;font-size:.82rem;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;">
+        Année 2 — Croissance
+        <span style="color:var(--text-soft);text-transform:none;letter-spacing:0;font-size:.8rem;"> · Objectif : 10 clients actifs</span>
+      </p>
+      <table>
+        <thead><tr><th>Source de revenus</th><th>Détail</th><th>Montant</th></tr></thead>
+        <tbody>
+          <tr><td>Nouveaux déploiements</td><td>7 clients × 656 000 FCFA</td><td>4 592 000 FCFA</td></tr>
+          <tr><td>Abonnements maintenance</td><td>10 clients × 39 000 FCFA × 12 mois</td><td>4 680 000 FCFA</td></tr>
+          <tr><td>Fonctionnalités sur mesure</td><td>3 demandes × 328 000 FCFA</td><td>984 000 FCFA</td></tr>
+          <tr class="total-row"><td colspan="2">Total Année 2</td><td>~10 256 000 FCFA</td></tr>
+        </tbody>
+      </table>
+      <p style="font-family:'Trebuchet MS',sans-serif;font-size:.8rem;color:var(--success);margin-top:.9rem;">✓ Marge nette : ~97 % · Coûts infrastructure : ~255 000 FCFA/an</p>
+    </div>
+
+    <!-- Année 3 -->
+    <div class="card" style="margin-bottom:1.5rem;">
+      <p style="font-family:'Trebuchet MS',sans-serif;font-size:.82rem;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;">
+        Année 3 — Scalabilité
+        <span style="color:var(--text-soft);text-transform:none;letter-spacing:0;font-size:.8rem;"> · Objectif : SaaS autonome ou petite agence</span>
+      </p>
+      <table>
+        <thead><tr><th>Source de revenus</th><th>Détail</th><th>Montant</th></tr></thead>
+        <tbody>
+          <tr><td>Abonnements récurrents</td><td>25 clients × 52 000 FCFA × 12 mois</td><td>15 600 000 FCFA</td></tr>
+          <tr><td>Nouveaux déploiements</td><td>10 clients × 787 000 FCFA</td><td>7 870 000 FCFA</td></tr>
+          <tr><td>Formations / accompagnement</td><td>5 sessions × 197 000 FCFA</td><td>985 000 FCFA</td></tr>
+          <tr class="total-row"><td colspan="2">Total Année 3</td><td>~24 455 000 FCFA</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Récapitulatif visuel -->
+    <div class="years-grid">
+      <div class="year-card y1">
+        <div class="label">Année 1</div>
+        <div class="amount">2 169 000</div>
+        <div class="sub">FCFA · Preuve de concept</div>
+      </div>
+      <div class="year-card y2">
+        <div class="label">Année 2</div>
+        <div class="amount">10 256 000</div>
+        <div class="sub">FCFA · Modèle viable</div>
+      </div>
+      <div class="year-card y3">
+        <div class="label">Année 3</div>
+        <div class="amount">24 455 000</div>
+        <div class="sub">FCFA · Business scalable</div>
+      </div>
+    </div>
+
+    <div class="recap">
+      <h3>Progression des revenus</h3>
+      <div class="bar-container">
+        <div class="bar-row">
+          <span class="bar-label">Année 1</span>
+          <div class="bar-track"><div class="bar-fill y1"></div></div>
+          <span class="bar-val">2 169 000 FCFA</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Année 2</span>
+          <div class="bar-track"><div class="bar-fill y2"></div></div>
+          <span class="bar-val">10 256 000 FCFA</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Année 3</span>
+          <div class="bar-track"><div class="bar-fill y3"></div></div>
+          <span class="bar-val">24 455 000 FCFA</span>
+        </div>
+      </div>
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,.15);margin:1.5rem 0;" />
+      <div class="recap-row"><span class="r-label">Total Année 1</span><span class="r-amount">2 169 000 FCFA</span></div>
+      <div class="recap-row"><span class="r-label">Total Année 2</span><span class="r-amount">10 256 000 FCFA</span></div>
+      <div class="recap-row"><span class="r-label">Total Année 3</span><span class="r-amount">24 455 000 FCFA</span></div>
+      <div class="recap-row total"><span class="r-label">TOTAL 3 ANS</span><span class="r-amount">~36 880 000 FCFA</span></div>
+    </div>
+
+    <!-- Facteurs clés -->
+    <div class="impact-grid">
+      <div class="impact-item">
+        <span class="icon">♻️</span>
+        <div>
+          <h4>Réutilisabilité du code</h4>
+          <p>Chaque nouveau client coûte peu à déployer — le code est déjà prêt.</p>
+        </div>
+      </div>
+      <div class="impact-item">
+        <span class="icon">📅</span>
+        <div>
+          <h4>Abonnement mensuel</h4>
+          <p>Revenu récurrent stable et prévisible, indépendant des nouveaux clients.</p>
+        </div>
+      </div>
+      <div class="impact-item">
+        <span class="icon">⚡</span>
+        <div>
+          <h4>Stack moderne</h4>
+          <p>Next.js + MongoDB = crédibilité technique et performance auprès des clients.</p>
+        </div>
+      </div>
+      <div class="impact-item">
+        <span class="icon">💳</span>
+        <div>
+          <h4>Stripe intégré</h4>
+          <p>Les clients génèrent des revenus dès le premier jour, sans friction.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 8. CONCLUSION ══ -->
+  <div class="section" id="s8">
+    <div class="section-title">
+      <span class="num">8</span>
+      <h2>Conclusion</h2>
+    </div>
+    <div class="conclusion">
+      <blockquote>
+        Ce projet démontre qu'un développeur junior peut concevoir, développer et déployer
+        une application e-commerce <em>production-ready</em> en 5 semaines, en appliquant
+        les meilleures pratiques du secteur — Agile, TypeScript, sécurité, cloud.
+        <strong>C'est à la fois un produit fonctionnel et une preuve de compétences.</strong>
+      </blockquote>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <p>Projet Final — Formation Gomycode · Stack MERN · Next.js + Node.js + MongoDB + Stripe</p>
+    <p style="margin-top:.3rem;">Prévisions sur modèle Freelance/SaaS · 1 € = 656 FCFA · 2024</p>
+  </footer>
+
+</div>
+</body>
+</html>

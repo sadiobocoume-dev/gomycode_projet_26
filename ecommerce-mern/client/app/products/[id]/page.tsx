@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { Product } from '@/types/product'
 import { notFound } from 'next/navigation'
+import AddToCartButton from '@/components/AddToCartButton'
 
 // params = les segments dynamiques de l'URL
 //ex: /products/abc123 params.id =. "abc123"
@@ -75,18 +76,7 @@ export default async function ProductDetailPage({
                         Note : {product.rating} / 5
                     </p>
 
-                    {/*
-                        Bouton Ajouter au panier
-                        Désactivé si stock = 0
-                        La logique Zustand sera connectée au Sprint 3
-                    */}
-                    <button
-                        disabled={product.stock === 0}
-                        className="mt-4 bg-teal-500 text-white py-3 px-6 rounded-xl font-semibold
-                                   hover:bg-teal-600 transition disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
-                    >
-                        Ajouter au panier
-                    </button>
+                    <AddToCartButton product={product} />
                 </div>
             </div>
         </main>

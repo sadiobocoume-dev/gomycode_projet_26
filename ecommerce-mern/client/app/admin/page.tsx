@@ -143,7 +143,7 @@ function AdminContent() {
                         {products.map((product) => (
                             <div
                                 key={product._id}
-                                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex justify-between items-center gap-3 hover:shadow-md transition-shadow duration-200"
+                                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex flex-col sm:flex-row justify-between gap-3 hover:shadow-md transition-shadow duration-200"
                             >
                                 <div>
                                     <p className="font-semibold text-gray-800">{product.name}</p>
@@ -177,10 +177,10 @@ function AdminContent() {
 
 export default function AdminPage() {
     return (
-        <AdminRoute>
-            <Suspense fallback={<p className="text-center py-12 text-gray-400">Chargement...</p>}>
+        <Suspense fallback={<p className="text-center py-12 text-gray-400">Chargement...</p>}>
+            <AdminRoute>
                 <AdminContent />
-            </Suspense>
-        </AdminRoute>
+            </AdminRoute>
+        </Suspense>
     )
 }

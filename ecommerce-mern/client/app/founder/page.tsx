@@ -6,7 +6,7 @@ export default function FounderPage() {
             <PageHero
                 badge="Le fondateur"
                 title="Rencontrez le créateur de Galsen-Ecommerce-Shop"
-                subtitle="Étudiant ingénieur, entrepreneur et passionné de tech — Sadio Bocoumé a construit Galsen-Ecommerce-Shop pour connecter Thiès au numérique."
+                subtitle="Étudiant ingénieur, entrepreneur et passionné de tech — Sadio Bocoum a construit Galsen-Ecommerce-Shop pour connecter Thiès au numérique."
             />
 
             <main className="max-w-3xl mx-auto px-4 py-12 flex flex-col gap-6">
@@ -17,7 +17,7 @@ export default function FounderPage() {
                         SB
                     </div>
                     <div className="flex flex-col gap-2 text-center sm:text-left">
-                        <h2 className="text-2xl font-bold text-slate-800">Sadio Bocoumé</h2>
+                        <h2 className="text-2xl font-bold text-slate-800">Sadio Bocoum</h2>
                         <p className="text-teal-600 font-semibold text-sm">Fondateur & Développeur — Galsen-Ecommerce-Shop</p>
                         <p className="text-slate-500 text-sm">Thiès, Sénégal · Mour 3</p>
                         <div className="flex flex-wrap justify-center sm:justify-start gap-2 mt-2">
@@ -33,7 +33,7 @@ export default function FounderPage() {
                 <div className="bg-white border border-slate-100 rounded-2xl shadow-sm p-6">
                     <h3 className="font-bold text-slate-800 mb-3">Son parcours</h3>
                     <p className="text-slate-500 leading-relaxed">
-                        Étudiant en formation d'ingénieur junior, Sadio Bocoumé a créé Galsen-Ecommerce-Shop avec un objectif
+                        Étudiant en formation d'ingénieur junior, Sadio Bocoum a créé Galsen-Ecommerce-Shop avec un objectif
                         clair : mettre la technologie au service du commerce local thiessois. Passionné par le
                         développement web et les solutions concrètes, il a construit cette plateforme de A à Z,
                         du backend Node.js au frontend Next.js.
@@ -47,7 +47,7 @@ export default function FounderPage() {
                         les grandes enseignes. Pas besoin d'aller à Dakar pour profiter du numérique.
                         Thiès a tout ce qu'il faut — il manquait juste la plateforme."
                     </p>
-                    <p className="text-teal-600 font-semibold text-sm mt-3 italic">— Sadio Bocoumé</p>
+                    <p className="text-teal-600 font-semibold text-sm mt-3 italic">— Sadio Bocoum</p>
                 </div>
 
                 <div className="bg-white border border-slate-100 rounded-2xl shadow-sm p-6">

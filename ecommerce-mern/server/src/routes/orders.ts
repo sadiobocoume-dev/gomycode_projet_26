@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import protect, { isAdmin } from '../middleware/auth'
-import { createOrder, getMyOrders, getOrderById, payOrder, getAllOrders, getOrderByIdAdmin, updateOrderStatus } from '../controllers/orderControllers'
+import { createOrder, getMyOrders, getOrderById, payOrder, getAllOrders, getOrderByIdAdmin, updateOrderStatus, cancelOrder } from '../controllers/orderControllers'
 
 const router = Router()
 
@@ -28,5 +28,8 @@ router.post('/:id/pay', protect, payOrder)
 
 // PATCH /api/orders/:id/status — modifier le statut (admin requis)
 router.patch('/:id/status', protect, isAdmin, updateOrderStatus)
+
+// PATCH /api/orders/:id/cancel — annuler une commande (propriétaire, en_attente uniquement)
+router.patch('/:id/cancel', protect, cancelOrder)
 
 export default router
